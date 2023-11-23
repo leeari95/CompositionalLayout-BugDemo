@@ -75,23 +75,28 @@ class ViewController: UIViewController {
     
     private func mainSectionLayout() -> NSCollectionLayoutSection? {
         let itemSideMargin: CGFloat = 15
-        let sectionLeadingMargin: CGFloat = 30
         let itemWidth = TestCell.Const.size.width + itemSideMargin
-        let sectionTrailingMargin: CGFloat = UIDevice.current.userInterfaceIdiom == .pad ? itemWidth : 30
+        let sectionTrailingMargin: CGFloat = {
+            if UIDevice.current.userInterfaceIdiom == .pad {
+                return UIScreen.main.bounds.width - (itemWidth + itemSideMargin)
+            } else {
+                return 30
+            }
+        }()
         let itemSize = NSCollectionLayoutSize(
             /// inset을 추가하면 해당 inset 만큼 width가 줄어들기 때문에 inset 값을 더함.
             widthDimension: .absolute(itemWidth),
             heightDimension: .fractionalHeight(1)
         )
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
-        item.contentInsets = .init(top: .zero, leading: .zero, bottom: .zero, trailing: itemSideMargin)
+        item.contentInsets = .init(top: .zero, leading: itemSideMargin, bottom: .zero, trailing: .zero)
         let group = NSCollectionLayoutGroup.horizontal(
             layoutSize: itemSize,
             subitems: [item]
         )
         let section = NSCollectionLayoutSection(group: group)
         /// section의 inset 또한 item의 inset 만큼 줄어들기 때문에 item inset을 더함.
-        section.contentInsets = .init(top: .zero, leading: sectionLeadingMargin + itemSideMargin, bottom: .zero, trailing: sectionTrailingMargin)
+        section.contentInsets = .init(top: .zero, leading: itemSideMargin, bottom: .zero, trailing: sectionTrailingMargin)
         section.orthogonalScrollingBehavior = UIDevice.current.userInterfaceIdiom == .pad ? .groupPaging : .groupPagingCentered
         return section
     }
