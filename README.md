@@ -1,7 +1,7 @@
 # What????
 
 * On iOS 15, assigning orthogonalScrollingBehavior as groupPagingCentered results in abnormal behavior.
-* This issue does not occur on iOS 15 versions of the iPad.
+* https://developer.apple.com/forums/thread/741880
 
 iOS 15|iOS 17
 :-:|:-:
